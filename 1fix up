@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+int loadData()
+{
+  FILE*fp=fopen("D:/atm.txt","r");
+  if(fp==NULL)
+  {
+    return 0;
+  }
+  else
+  {
+    while(!feof(fp))
+    {
+      //创建结点，在堆上申请一块内存空间，将其地址赋值给指针newNode
+      Account * newNode=(Account *)malloc(sizeof(Account));
+      
+      //结点赋值，结点初始化
+      newNode->next=NULL;
+      fascanf(fp,"%s %s %d\n",newNode->username,newNode->password,&newNode->money);
+      
+      //添加结点到列表
+      if(head==NULL)
+      {
+        head=newNode;
+        tail=newNode;
+      }
+      else
+      {
+      tail->next=newNode;
+      tail=newNode;
+      }
+    }
+    return 1;
+  }
+}
+
+
+void saveTransaction()
+{
+  FILE*fp=fopen("D:/transaction.text","w");
+  if(fp!=NULL)
+  {
+    Transaction*curp=tHead;
+    while(curp!=NULL)
+    {
+      fprintf(fp,"%s %ld %d %d\n",curp->username,curp->timestamp,curp->type,curp->amount);
+      curp=curp->next;
+    }
+    fclose(fp);
+  }
+}
+
+
+int main()
+{
+  int staus=loadData();
+  //loadTransaction();
+  if(status==1)
+  {
+    printf("加载成功!\n");
+  }
+  else
+  {
+    printf("加载失败!\n");
+  }
+  signIn();
+  
+  //saveData();
+  saveTransaction();
+  
+  return 0
+}
