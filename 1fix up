@@ -1,7 +1,53 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include<time.h>
+
+struct Transaction
+{
+  char username[100];
+  time_t timestamp;
+  int type;//0-取款  1-存款
+  int amount;//数额
+  
+  struct Transaction*next;
+}；
+typedef struct Transaction Transaction;
+
+Transaction*tHead=NULL;
+Transaction*tTail=NULL;
+
+struct Account
+{
+  char username[100];
+  char password[100];
+  
+  int money;
+  
+  struct Account*next;
+};
+typedef struct Account Account;
+
+Account*head=NULL;//指向头结点的指针
+Account*tail=NULL;//指向尾结点的指针
+Account*curAccount=NULL;//指向当前登录账户的指针
 
 
+//找到返回1，否则返回0
+int findAccount(Account a)
+{
+  Account*curP=head;
+  while(curP!=NULL)
+  {
+    if((strcmp(curP->username,a.username)==0)&&(strcmp(curP->password,a.password)==0))
+    {
+      curAccount=curP;
+      return 1;
+    }
+    curP=curP->next;
+  }
+  return 0;
+}
 
 int loadData()
 {
